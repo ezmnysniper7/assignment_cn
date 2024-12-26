@@ -1,21 +1,334 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* globals.css */
+* {
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box;
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #ebebeb;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+a {
+  text-decoration: none;
+}
+
+/* Container for the Manage Students page */
+.students-container,
+.teachers-container,
+.courses-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.students-header,
+.teachers-header,
+.courses-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.students-title,
+.teachers-title,
+.courses-title {
+  font-size: 1.5rem;
+  color: #2c3e50;
+}
+
+.student-form,
+.teacher-form,
+.course-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  align-items: flex-end;
+}
+
+.student-form input,
+.teacher-form input,
+.course-form input,
+.course-form select {
+  flex: 1 1 200px;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.student-form button,
+.teacher-form button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #2980b9;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.student-form button:hover,
+.teacher-form button:hover {
+  background-color: #1f6391;
+}
+
+.cancel-btn,
+.cancelButton {
+  background-color: #bdc3c7;
+  margin-left: 0.5rem;
+}
+
+.cancel-btn:hover,
+.cancelButton:hover {
+  background-color: #95a5a6;
+}
+
+/* Table */
+.students-table,
+.teachers-table,
+.courses-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.students-table th,
+.students-table td,
+.teachers-table th,
+.teachers-table td,
+.courses-table th,
+.courses-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.students-table th,
+.teachers-table th,
+.courses-table th {
+  background-color: #f8f9fa;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.students-table tr:hover,
+.teachers-table tr:hover,
+.courses-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.action-btn.edit {
+  background-color: #27ae60;
+  color: #fff;
+}
+
+.action-btn.edit:hover {
+  background-color: #1e8449;
+}
+
+.action-btn.delete {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+.action-btn.delete:hover {
+  background-color: #c0392b;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  list-style: none;
+  padding: 0;
+}
+
+.pageLink {
+  margin: 0 5px;
+  padding: 8px 12px;
+  border: 1px solid #bdc3c7;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #2c3e50;
+  transition: background-color 0.3s ease;
+}
+
+.pageLink:hover {
+  background-color: #ecf0f1;
+}
+
+.active {
+  background-color: #2980b9;
+  color: white;
+  border-color: #2980b9;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Modal Overlay and Content */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 400px;
+  box-shadow: 0 5px 16px rgba(0,0,0,0.2);
+  position: relative;
+}
+
+/* Required Field Indicator */
+.required {
+  color: #e74c3c;
+  margin-left: 2px;
+}
+
+/* Loader */
+.loader {
+  text-align: center;
+  color: #7f8c8d;
+  font-size: 18px;
+  padding: 20px 0;
+}
+
+/* Form Groups */
+.form-group { /* New class for form groups */
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 200px;
+}
+
+/* Labels */
+.form-group label {
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+/* Required Field Indicator */
+.required {
+  color: #e74c3c;
+  margin-left: 2px;
+}
+
+/* Form Actions */
+.form-actions { /* New class for form actions */
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+/* Submit and Cancel Buttons */
+.submit-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #2980b9;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #1f6391;
+}
+
+/* -------------------- Courses Page Unique Styles -------------------- */
+
+/* Courses Container - Slightly different background color */
+.courses-container {
+  background-color: #f0f8ff; /* Alice Blue */
+}
+
+/* Courses Title - Unique color */
+.courses-title {
+  color: #34495e; /* Darker blue */
+}
+
+/* Courses Table - Unique header background */
+.courses-table th {
+  background-color: #2980b9; /* Blue */
+  color: #ffffff;
+}
+
+/* Courses Table Rows - Alternate row colors */
+.courses-table tr:nth-child(even) {
+  background-color: #eaf2f8; /* Light blue */
+}
+
+.courses-table tr:hover {
+  background-color: #d0e6f6; /* Slightly darker on hover */
+}
+
+/* Action Buttons - Unique styles for Courses */
+.courses-container .action-btn.edit {
+  background-color: #8e44ad; /* Purple for edit */
+}
+
+.courses-container .action-btn.edit:hover {
+  background-color: #71368a;
+}
+
+.courses-container .action-btn.delete {
+  background-color: #c0392b; /* Red for delete */
+}
+
+.courses-container .action-btn.delete:hover {
+  background-color: #a93226;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .students-form,
+  .teachers-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .action-btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .modalContent {
+    width: 90%;
+  }
 }

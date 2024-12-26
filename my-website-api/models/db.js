@@ -1,12 +1,12 @@
 // models/db.js
+require('dotenv').config();
 const mysql = require('mysql2/promise');
 
-// Create a connection pool (recommended for larger apps)
 const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',      // your MySQL username
-  password: 'mysql12345',  // your MySQL password (or whatever you set)
-  database: 'my_website_db',  // the database name you will create
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
