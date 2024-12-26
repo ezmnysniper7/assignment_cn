@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import {jwtDecode} from 'jwt-decode';
 
 export default function CoursesPage() {
   const [courses, setCourses] = useState([]);
@@ -10,12 +11,38 @@ export default function CoursesPage() {
   const [editId, setEditId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [userRole, setUserRole] = useState(null);
+  const [userId, setUserId] = useState(null);
+
   const baseURL = process.env.NEXT_PUBLIC_API_URL; // from .env.local
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        setUserRole(decoded.role); // Assuming the token has a 'role' field
+        setUserId(decoded.userId); // Assuming the token has a 'userId' field
+
+        if (decoded.role === 'admin') {
+          fetchTeachers(); // Admin can fetch all teachers
+        } else if (decoded.role === 'teacher') {
+          // For teachers, assign the course to themselves
+          setFormData(prev => ({ ...prev, teacher_id: decoded.userId }));
+        }
+      } catch (error) {
+        console.error('Error decoding token:', error);
+        alert('Invalid token. Please log in again.');
+      }
+    } else {
+      alert('No token found. Please log in.');
+      // Optionally, redirect to login page
+    }
+  }, []);
 
   // Fetch courses and teachers on first render
   useEffect(() => {
     fetchCourses();
-    fetchTeachers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -130,7 +157,9 @@ export default function CoursesPage() {
       {/* CREATE / EDIT FORM */}
       <form onSubmit={handleSubmit} className="course-form">
         <div className="form-group">
-          <label htmlFor="name">Course Name<span className="required">*</span></label>
+          <label htmlFor="name">
+            Course Name<span className="required">*</span>
+          </label>
           <input
             type="text"
             name="name"
@@ -141,23 +170,43 @@ export default function CoursesPage() {
             required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="teacher_id">Assigned Teacher<span className="required">*</span></label>
-          <select
-            name="teacher_id"
-            id="teacher_id"
-            value={formData.teacher_id}
-            onChange={handleChange}
-            required
-          >
-            <option value="">-- Select Teacher --</option>
-            {teachers.map((teacher) => (
-              <option key={teacher.teacher_id} value={teacher.teacher_id}>
-                {teacher.name} ({teacher.department})
-              </option>
-            ))}
-          </select>
-        </div>
+
+        {/* Conditionally render the teacher selection */}
+        {userRole === 'admin' ? (
+          <div className="form-group">
+            <label htmlFor="teacher_id">
+              Assigned Teacher<span className="required">*</span>
+            </label>
+            <select
+              name="teacher_id"
+              id="teacher_id"
+              value={formData.teacher_id}
+              onChange={handleChange}
+              required
+            >
+              <option value="">-- Select Teacher --</option>
+              {teachers.map((teacher) => (
+                <option key={teacher.teacher_id} value={teacher.teacher_id}>
+                  {teacher.name} ({teacher.department})
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : (
+          // For teachers, display their own ID in a read-only input
+          <div className="form-group">
+            <label htmlFor="teacher_id">
+              Assigned Teacher<span className="required">*</span>
+            </label>
+            <input
+              type="text"
+              name="teacher_id"
+              id="teacher_id"
+              value={formData.teacher_id}
+              readOnly
+            />
+          </div>
+        )}
 
         <div className="form-actions">
           <button type="submit" className="submit-btn">
