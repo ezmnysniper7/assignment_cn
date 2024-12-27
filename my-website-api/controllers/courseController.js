@@ -3,15 +3,14 @@ const pool = require('../models/db');
 
 // CREATE course (teacher or admin)
 exports.createCourse = async (req, res) => {
-  const { name, teacherId } = req.body; // Adjusted to accept teacherId from body if admin
+  const { name, teacher_id } = req.body; // Adjusted to accept teacherId from body if admin
   try {
-    let teacher_id = req.user.userId;
+    
     if (req.user.role === 'admin') {
       // Admin can create course for any teacher
-      if (!teacherId) {
+      if (!teacher_id) {
         return res.status(400).json({ message: 'teacherId is required for admin' });
       }
-      teacher_id = teacherId;
     }
 
     // Ensure teacher exists

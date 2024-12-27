@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { jwtDecode } from 'jwt-decode';
+import jwt_decode from 'jwt-decode';
 import styles from './NavBar.module.css';
 
 export default function NavBar() {
@@ -14,7 +14,7 @@ export default function NavBar() {
     const token = localStorage.getItem('token');
     if (token) {
       try {
-        const decoded = jwtDecode(token);
+        const decoded = jwt_decode(token);
         setRole(decoded.role);
       } catch (error) {
         console.error('Invalid token decode:', error);
@@ -49,6 +49,7 @@ export default function NavBar() {
             <li><Link href="/students">Manage Students</Link></li>
             <li><Link href="/teachers">Manage Teachers</Link></li>
             <li><Link href="/courses">Manage Courses</Link></li>
+            <li><Link href="/enrollments">Manage Enrollments</Link></li>
           </>
         )}
 
@@ -64,6 +65,7 @@ export default function NavBar() {
         {role === 'student' && (
           <>
             <li><Link href="/enrollments">My Enrollments</Link></li>
+            <li><Link href="/profiles">Manage Profile</Link></li>
           </>
         )}
       </ul>

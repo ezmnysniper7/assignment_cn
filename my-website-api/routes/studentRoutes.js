@@ -11,10 +11,10 @@ router.post('/', verifyToken, requireAdmin, studentController.createStudent);
 router.get('/', verifyToken, requireAdmin, studentController.getAllStudents);
 
 // READ one
-router.get('/:id', verifyToken, requireAdmin, studentController.getStudentById);
+router.get('/:id', verifyToken, studentController.getStudentById);
 
 // UPDATE
-router.put('/:id', verifyToken, requireAdmin, studentController.updateStudent);
+router.put('/:id', verifyToken, studentController.updateStudent);
 
 // DELETE
 router.delete('/:id', verifyToken, requireAdmin, studentController.deleteStudent);

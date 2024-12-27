@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import {jwtDecode} from 'jwt-decode';
+import jwt_decode from 'jwt-decode';
 
 export default function CoursesPage() {
   const [courses, setCourses] = useState([]);
@@ -20,9 +20,9 @@ export default function CoursesPage() {
     const token = localStorage.getItem('token');
     if (token) {
       try {
-        const decoded = jwtDecode(token);
-        setUserRole(decoded.role); // Assuming the token has a 'role' field
-        setUserId(decoded.userId); // Assuming the token has a 'userId' field
+        const decoded = jwt_decode(token);
+        setUserRole(decoded.role); 
+        setUserId(decoded.userId); 
 
         if (decoded.role === 'admin') {
           fetchTeachers(); // Admin can fetch all teachers

@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { jwtDecode } from 'jwt-decode';
+import jwt_decode from 'jwt-decode';
 import styles from './main.module.css';
 
 export default function MainPage() {
@@ -17,7 +17,7 @@ export default function MainPage() {
       return;
     }
     try {
-      const decoded = jwtDecode(token);
+      const decoded = jwt_decode(token);
       if (!decoded.role) throw new Error('No role in token');
       setRole(decoded.role);
     } catch (err) {
@@ -49,6 +49,10 @@ export default function MainPage() {
               <h3>Manage Courses</h3>
               <p>Add new courses, assign teachers, etc.</p>
             </div>
+            <div className={styles.card} onClick={() => router.push('/enrollments')}>
+              <h3>Manage Enrollments</h3>
+              <p>Add new enrollments, assign enrollments, etc.</p>
+            </div>
           </>
         )}
 
@@ -73,7 +77,7 @@ export default function MainPage() {
               <h3>My Enrollments</h3>
               <p>View or drop your enrolled courses</p>
             </div>
-            <div className={styles.card}>
+            <div className={styles.card} onClick={() => router.push('/profiles')}>
               <h3>My Profile</h3>
               <p>View or edit your student info</p>
             </div>

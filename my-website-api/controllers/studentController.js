@@ -44,15 +44,15 @@ exports.createStudent = async (req, res) => {
 
 // UPDATE student
 exports.updateStudent = async (req, res) => {
-  const { student_id } = req.params;
+  const { id } = req.params; // Changed from 'student_id' to 'id'
   const { username, name, age, major, password } = req.body;
-  console.log(`Received updateStudent request for ID: ${student_id}`, req.body); // Debugging
+  console.log(`Received updateStudent request for ID: ${id}`, req.body); // Debugging
 
   try {
     // Check if the user exists
     const [userRows] = await pool.query(`
       SELECT * FROM users WHERE id = ?
-    `, [student_id]);
+    `, [id]);
 
     if (userRows.length === 0) {
       console.log('User not found');
@@ -66,14 +66,14 @@ exports.updateStudent = async (req, res) => {
         UPDATE users
         SET username = ?, password = ?, name = ?
         WHERE id = ?
-      `, [username, password, name, student_id]);
+      `, [username, password, name, id]);
     } else {
       console.log('Updating users table without password');
       await pool.query(`
         UPDATE users
         SET username = ?, name = ?
         WHERE id = ?
-      `, [username, name, student_id]);
+      `, [username, name, id]);
     }
 
     // Update students table for age, major, and name
@@ -82,7 +82,7 @@ exports.updateStudent = async (req, res) => {
       UPDATE students
       SET age = ?, major = ?, name = ?
       WHERE student_id = ?
-    `, [age, major, name, student_id]);
+    `, [age, major, name, id]);
 
     if (result.affectedRows === 0) {
       console.log('Student not found in students table');
@@ -103,6 +103,7 @@ exports.updateStudent = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+
 
 
 // READ all students
@@ -155,3 +156,5 @@ exports.deleteStudent = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+
